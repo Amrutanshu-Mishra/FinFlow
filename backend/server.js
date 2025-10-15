@@ -5,7 +5,7 @@ const path=require("path");
 const connectDB = require("./config/db");
 
 const app=express();
-
+const authRoutes=require("./routes/authRoutes.js")
 //Middleware to handle CORS
 app.use(
      cors({
