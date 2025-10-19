@@ -42,7 +42,38 @@ exports.registerUser = async (req, res) => {
 
 //Login User
 exports.loginUser = async (req, res) => {
+     const {email, password}=req.body;
+     // console.log(email, password);
      
+
+     if(!email || !password){
+          return res.status(400).json({message:"All fields required."});
+     }
+     try {
+          const user=await User.findOne({email:email});
+          console.log(user.password);
+          
+          if(!user){
+               return res.status(400).json({message:"The given email is not registered."});
+          }
+          console.log("Hey!");
+          
+          if(!await user.comparePassword(password)){
+               console.log("HERE\n");
+               return res.status(400).json({message:"Incorrect password entered."});
+          }
+          
+          res.status(200).json({
+               id:user._id,
+               user,
+               token:generateToken(user._id),
+          });
+     } catch (error) {
+          console.error("Login error:", error);
+          res.status(500).json({message:"Error logging in.", error:error.message});
+     }
+
+
 }
 
 //Get user info
