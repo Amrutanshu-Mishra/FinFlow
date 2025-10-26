@@ -3,6 +3,8 @@ const User = require('../models/User.js');
 
 exports.protect = async (req, res, next) => {
      let token = req.headers.authorization?.split(" ")[1];
+     // console.log("HERE", token);
+     
 
      if(!token){
           return res.status(401).json({message:"Not Authorized, No token"});
@@ -13,6 +15,6 @@ exports.protect = async (req, res, next) => {
           req.user = await User.findById(decoded.id).select('-password');
           next();
      } catch (error) {
-          res.status(401).json({message:"Not authorized, token failed"});
+          return res.status(401).json({message:"Not authorized, token failed"});
      }
 };

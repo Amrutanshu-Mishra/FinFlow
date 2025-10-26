@@ -79,6 +79,8 @@ exports.loginUser = async (req, res) => {
 //Get user info
 exports.getUserInfo = async (req, res) => {
      try {
+          // console.log(body, req.body);
+          console.log("req", req);
           const user=await User.findById(req.body.id).select("-password");
 
           if(!user){
